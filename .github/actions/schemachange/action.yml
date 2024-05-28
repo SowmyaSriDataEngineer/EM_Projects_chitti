@@ -26,6 +26,6 @@ runs:
 
     - name: Perform dry run of schemachange
       run: |
-        echo "Performing dry run of schemachange..."
+        echo "Performing dry run of schemachange... $SNOWFLAKE_USER"
         schemachange deploy -f $SNOWFLAKE_USER --dry-run
       shell: bash
