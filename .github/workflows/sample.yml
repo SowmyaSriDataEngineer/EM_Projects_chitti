@@ -7,10 +7,20 @@ on:
         description: 'Your name'
         required: true
         default: 'World'
+        type: choice
+        options:
+          - World
+          - Alice
+          - Bob
       greeting:
         description: 'Greeting message'
-        required: false
+        required: true
         default: 'Hello'
+        type: choice
+        options:
+          - Hello
+          - Hi
+          - Hey
 
 jobs:
   say_hello:
