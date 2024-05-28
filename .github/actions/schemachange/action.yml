@@ -28,10 +28,8 @@ runs:
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
             if "${{ github.event_name }}" == "workflow_dispatch"; then
-              echo $category
+              echo "$category"
             fi
           done
         done
-        
-        schemachange deploy -f $SNOWFLAKE_USER --dry-run
       shell: bash
