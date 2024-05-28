@@ -6,7 +6,7 @@ on:
       name:
         description: 'Your name'
         required: true
-        default: 'World'
+        default: 'Sowmya'
       greeting:
         description: 'Greeting message'
         required: true
