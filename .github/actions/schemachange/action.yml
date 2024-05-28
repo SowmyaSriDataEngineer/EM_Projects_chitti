@@ -27,10 +27,8 @@ runs:
       run: |
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
-            if "${{ github.event_name }}" == "workflow_dispatch"; then
               echo $folder
               echo "$folder"
-            fi
           done
         done
       shell: bash
