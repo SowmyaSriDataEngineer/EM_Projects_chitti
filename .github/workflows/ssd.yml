@@ -1,4 +1,4 @@
-name: Schemachange Dispatch and PR Example
+name: PRPRORPRO Dispatch and PR Example
 
 on:
   workflow_dispatch:
@@ -25,10 +25,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Use Custom Action
-        uses: ./.github/actions/schemachange/action/schema
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          action: check_schemachange_installed
+          node-version: '12.x'
+
+      - name: Use Custom Action
+        uses: ./.github/actions/schemachange
+        with:
           name: ${{ github.event.inputs.name || 'World' }}
           greeting: ${{ github.event.inputs.greeting || 'Hello' }}
-          snowflake_user: ssd
+          snowflake_user: ddf
