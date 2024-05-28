@@ -1,0 +1,11 @@
+name: schema
+
+check_schemachange_installed:
+  description: check if sc installed
+  run: |
+    if ! command -v schemachange &> /dev/null; then
+      echo "schemachange not found, installing..."
+      pip install schemachange
+    else:
+    echo "installed"
+    fi
