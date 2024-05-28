@@ -22,8 +22,10 @@ runs:
         else
             echo "schemachange is already installed."
         fi
+      shell: bash
 
     - name: Perform dry run of schemachange
       run: |
         echo "Performing dry run of schemachange..."
         schemachange deploy -f $SNOWFLAKE_USER --dry-run
+      shell: bash
