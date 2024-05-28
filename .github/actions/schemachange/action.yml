@@ -30,14 +30,9 @@ runs:
         echo "$SNOWFLAKE_USER"
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
-            echo "This is category" "$category"
-            for env in prod dev sit uat; do
-              if [["${{ github.event_name }}" =='workflow_dispatch']]; 
-              then
-                 echo "Script folder: $catagory"
-              fi
-            done
-              
+            echo "This is category: $category"
+            echo "${{ github.event_name }}"
+            done  
           done
         done
         
