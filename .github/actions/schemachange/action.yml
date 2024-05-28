@@ -30,7 +30,6 @@ runs:
             if "${{ github.event_name }}" == "workflow_dispatch"; then
               echo $category
             fi
-            done  
           done
         done
         
