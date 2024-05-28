@@ -31,8 +31,9 @@ jobs:
           node-version: '12.x'
 
       - name: Use Custom Action
-        uses: ./.github/actions/schemachange
+        uses: ./.github/actions/schemachange/schema
         with:
+          action: check_schemachange_installed
           name: ${{ github.event.inputs.name || 'World' }}
           greeting: ${{ github.event.inputs.greeting || 'Hello' }}
           snowflake_user: ddf
