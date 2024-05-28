@@ -1,11 +1,16 @@
-name: schema
-
-check_schemachange_installed:
-  description: check if sc installed
-  run: |
-    if ! command -v schemachange &> /dev/null; then
-      echo "schemachange not found, installing..."
-      pip install schemachange
-    else:
-    echo "installed"
-    fi
+name: 'schemachange Action'
+description: 'This action installs schemachange and prints the Snowflake user.'
+inputs:
+  name:
+    description: 'Your name'
+    required: true
+    default: 'World'
+  greeting:
+    description: 'Greeting message'
+    required: true
+    default: 'Hello'
+runs:
+  using: 'node12'
+  main: 'index.js'
+env:
+  SNOWFLAKE_USER: ${{ inputs.snowflake_user }}
