@@ -27,7 +27,10 @@ runs:
       run: |
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
-              echo $folder
+            for env in prod dev uat sit uat; do
+               echo "Script folder is" "$folder"
+               echo "Config folder is ./instances/schemachange/config/$SNOWFLAKE_ENV/$folder/$env"
+            done
           done
         done
       shell: bash
