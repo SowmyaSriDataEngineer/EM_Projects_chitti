@@ -1,16 +1,29 @@
-name: 'schemachange Action'
-description: 'This action installs schemachange and prints the Snowflake user.'
-inputs:
-  name:
-    description: 'Your name'
-    required: true
-    default: 'World'
-  greeting:
-    description: 'Greeting message'
-    required: true
-    default: 'Hello'
+name: 'My Actions'
+description: 'This action installs schemachange if it is not already installed and performs a dry run.'
+
 runs:
-  using: 'node12'
-  main: 'index.js'
-env:
-  SNOWFLAKE_USER: ${{ inputs.snowflake_user }}
+  using: 'shell'
+  steps:
+    - name: Check if schemachange is installed and install if not
+      run: |
+        if ! command -v schemachange &> /dev/null
+        then
+            echo "schemachange is not installed. Installing..."
+            if command -v pip &> /dev/null
+            then
+                pip install schemachange
+            elif command -v pip3 &> /dev/null
+            then
+                pip3 install schemachange
+            else
+                echo "Neither pip nor pip3 found. Unable to install schemachange."
+                exit 1
+            fi
+        else
+            echo "schemachange is already installed."
+        fi
+
+    - name: Perform dry run of schemachange
+      run: |
+        echo "Performing dry run of schemachange..."
+        schemachange deploy -f $SNOWFLAKE_USER --dry-run
