@@ -1,0 +1,43 @@
+name: Manual Dispatch and PR Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Your name'
+        required: true
+        default: 'World'
+        type: choice
+        options:
+          - World
+          - Alice
+          - Bob
+      greeting:
+        description: 'Greeting message'
+        required: true
+        default: 'Hello'
+        type: choice
+        options:
+          - Hello
+          - Hi
+          - Hey
+
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set default inputs for PRs
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "name=World" >> $GITHUB_ENV
+          echo "greeting=Hello" >> $GITHUB_ENV
+
+      - name: Print greeting
+        run: echo "${{ github.event.inputs.greeting || env.greeting }} ${{ github.event.inputs.name || env.name }}!"
