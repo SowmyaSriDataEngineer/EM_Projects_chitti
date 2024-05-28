@@ -26,8 +26,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use Custom Action
-        uses: ./.github/actions/schemachange/action
+        uses: ./.github/actions/schemachange/action/schema
         with:
+          action: check_schemachange_installed
           name: ${{ github.event.inputs.name || 'World' }}
           greeting: ${{ github.event.inputs.greeting || 'Hello' }}
           snowflake_user: ssd
