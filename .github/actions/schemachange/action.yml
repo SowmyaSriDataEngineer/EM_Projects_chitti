@@ -36,8 +36,8 @@ runs:
               then
                  echo "Script folder: $catagory"
               fi
-              
             done
+              
           done
         done
         
