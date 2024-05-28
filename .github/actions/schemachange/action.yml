@@ -27,10 +27,19 @@ runs:
     - name: Perform dry run of schemachange
       run: |
         echo "$SNOWFLAKE_USER"
+        echo "$SNOWFLAKE_ENV"
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
-            echo "$category"
             echo "$folder"
+            if [-d "$folder"]; then
+              for subfolder in "$folder"/*/; do
+                if [-d "$subfolder"]; then
+                  for env in prod dev sit uat; do
+                    echo "schemachange deploy -f "$subfolder" 
+                  done
+                fi
+              done
+            fi
           done
         done
         
