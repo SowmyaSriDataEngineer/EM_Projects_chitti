@@ -32,3 +32,4 @@ jobs:
           greeting: ${{ github.event.inputs.greeting }}
         env:
           SNOWFLAKE_USER: 'ssd'
+          SNOWFLAKE_ENV:  'nonprod-us-eat-2'
