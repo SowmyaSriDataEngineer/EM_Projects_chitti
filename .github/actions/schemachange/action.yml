@@ -25,13 +25,11 @@ runs:
 
     - name: Perform dry run of schemachange
       run: |
-        echo "Performing dry run of schemachange... $SNOWFLAKE_USER"
-        echo "Performing dry run of schemachange..." $SNOWFLAKE_USER
-        echo "$SNOWFLAKE_USER"
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
-            echo "This is category: $category"
-            echo "${{ github.event_name }}"
+            if "${{ github.event_name }}" == "workflow_dispatch":
+              echo $category
+            fi
             done  
           done
         done
