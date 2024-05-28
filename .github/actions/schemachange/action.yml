@@ -28,7 +28,6 @@ runs:
         for catagory in versioned repeatable always; do
           for folder in ./instances/schemachange/scripts/$catagory/*; do
               echo $folder
-              echo "$folder"
           done
         done
       shell: bash
