@@ -1,4 +1,4 @@
-name: PRPRORPRO Dispatch and PR Example
+name: Manual Dispatch and Actions Example
 
 on:
   workflow_dispatch:
@@ -12,27 +12,23 @@ on:
         required: true
         default: 'Hello'
 
-  pull_request:
-    branches:
-      - ssd
-    types: [opened, reopened]
-
 jobs:
-  say_hello:
+  execute_actions:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12.x'
+      - name: Execute Main Action (Install and Dry Run)
+        uses: ./.github/actions/schemachange
+        env:
+          SNOWFLAKE_USER: 'ssd'
 
-      - name: Use Custom Action
+      - name: Execute Dry Run Action
         uses: ./.github/actions/schemachange
         with:
-          name: ${{ github.event.inputs.name || 'World' }}
-          greeting: ${{ github.event.inputs.greeting || 'Hello' }}
-          snowflake_user: ddf
+          name: ${{ github.event.inputs.name }}
+          greeting: ${{ github.event.inputs.greeting }}
+        env:
+          SNOWFLAKE_USER: 'ssd'
