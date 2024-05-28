@@ -26,8 +26,13 @@ runs:
 
     - name: Perform dry run of schemachange
       run: |
-        echo "Performing dry run of schemachange... $SNOWFLAKE_USER"
-        echo "Performing dry run of schemachange..." $SNOWFLAKE_USER
         echo "$SNOWFLAKE_USER"
+        for catagory in versioned repeatable always; do
+          for folder in ./instances/schemachange/scripts/$catagory/*; do
+            echo "$category"
+            echo "$folder"
+          done
+        done
+        
         schemachange deploy -f $SNOWFLAKE_USER --dry-run
       shell: bash
