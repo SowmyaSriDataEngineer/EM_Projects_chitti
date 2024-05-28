@@ -1,0 +1,33 @@
+name: Schemachange Dispatch and PR Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Your name'
+        required: true
+        default: 'World'
+      greeting:
+        description: 'Greeting message'
+        required: true
+        default: 'Hello'
+
+  pull_request:
+    branches:
+      - ssd
+    types: [opened, reopened]
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Use Custom Action
+        uses: ./.github/actions/schemachange/action
+        with:
+          name: ${{ github.event.inputs.name || 'World' }}
+          greeting: ${{ github.event.inputs.greeting || 'Hello' }}
+          snowflake_user: ssd
