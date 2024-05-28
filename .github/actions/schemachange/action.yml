@@ -2,7 +2,7 @@ name: 'My Actions'
 description: 'This action installs schemachange if it is not already installed and performs a dry run.'
 
 runs:
-  using: 'shell'
+  using: 'composite'
   steps:
     - name: Check if schemachange is installed and install if not
       run: |
