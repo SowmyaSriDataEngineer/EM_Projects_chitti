@@ -1,6 +1,7 @@
 name: 'My Actions'
 description: 'This action installs schemachange if it is not already installed and performs a dry run.'
 runs:
+  dry-run
   using: 'composite'
   steps:
     - name: Check if schemachange is installed and install if not
@@ -44,3 +45,33 @@ runs:
           done
         done
       shell: bash
+
+  auto-commit
+    using: 'composite'
+    steps:
+    - name: Check if schemachange is installed and install if not (Deploy)
+      run: |
+        if ! command -v schemachange &> /dev/null
+        then
+            echo "schemachange is not installed. Installing..."
+            if command -v pip &> /dev/null
+            then
+                pip install schemachange
+            elif command -v pip3 &> /dev/null
+            then
+                pip3 install schemachange
+            else
+                echo "Neither pip nor pip3 found. Unable to install schemachange."
+                exit 1
+            fi
+        else
+            echo "schemachange is already installed."
+        fi
+      shell: bash
+
+    - name: Perform deployment/auto commit of schemachange commands
+      run: |
+        echo "Performing Deployment"
+
+    
+  
