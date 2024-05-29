@@ -26,11 +26,11 @@ runs:
     - name: Perform dry run of schemachange
       run: |
         for catagory in versioned repeatable always; do
-          for folder in ./instances/schemachange/scripts/$catagory/*; do
-            for env in prod dev uat sit uat; do
-               echo "Script folder is" "$folder"
-               echo "Config folder is ./instances/schemachange/config/$SNOWFLAKE_ENV/$folder/$env"
-            done
+          for db_folder in ./instances/schemachange/scripts/$catagory/*; do
+            if [ -d "$db_folder" ]; then
+               db_name=$(basename "$db_folder")
+               echo "Running schemachange deploy for $db_name in category $category"
+            fi
           done
         done
       shell: bash
