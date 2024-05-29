@@ -30,7 +30,7 @@ runs:
             if [ -d "$db_folder" ]; then
                db_name=$(basename "$db_folder")
                category_location=$category
-               echo "Running schemachange deploy for $db_name in category $category_location"
+               echo "Running schemachange deploy for $db_name in category" $category_location
             fi
           done
         done
