@@ -5,7 +5,7 @@ runs:
   using: 'composite'
   steps:
       - name: Check if schemachange is installed and install if not
-        if: github.workflow == 'schemachange dry run'
+        if: github.workflow != 'schemachange dry run'
         run: |
           if ! command -v schemachange &> /dev/null
           then
