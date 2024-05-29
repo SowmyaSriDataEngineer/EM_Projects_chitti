@@ -29,7 +29,14 @@ runs:
           for db_folder in ./instances/schemachange/scripts/$catagory/*; do
             if [ -d "$db_folder" ]; then
                db_name=$(basename "$db_folder")
-               echo "Running schemachange deploy for $db_name in category $db_folder"
+               for env in prod dev sit uat; do
+                  for sub_env in ./instances/schemachange/config/$SNOWFLAKE_ENV/$env/*; do
+                    if [ -d "$sub_env" ]; then
+                      echo "Script Folder ($db_name) --> $db_folder"
+                      echo "sub_env Folder ($sub_env) "
+                    fi
+                  done
+               done
             fi
           done
         done
