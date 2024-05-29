@@ -3,14 +3,24 @@ name: schemachange dry run
 on:
   workflow_dispatch:
     inputs:
-      name:
+      create_change_history_table:
         description: 'Your name'
         required: true
-        default: 'Sowmya'
+        default: 'World'
+        type: choice
+        options:
+          - World
+          - Alice
+          - Bob
       greeting:
         description: 'Greeting message'
         required: true
         default: 'Hello'
+        type: choice
+        options:
+          - Hello
+          - Hi
+          - Hey
 
 jobs:
   execute_actions:
@@ -28,7 +38,7 @@ jobs:
           SNOWFLAKE_ACCOUNT:  'TY1112.us-east-2.aws'
           SNOWFLAKE_ROLE:  'developer'
           SNOWFLAKE_WAREHOUSE: 'wh'
-          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ github.event.inputs.name }}
-          name:  ${{ github.event.inputs.name }}
+          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ github.event.inputs.create_change_history_table }}
+          name:  ${{ github.event.inputs.create_change_history_table }}
           
           
