@@ -4,8 +4,8 @@ description: 'This action installs schemachange if it is not already installed a
 runs:
   using: 'composite'
   steps:
-    dry-run:
       - name: Check if schemachange is installed and install if not
+        if: ${{ github.workflow == 'schemachange dry run' }}
         run: |
           if ! command -v schemachange &> /dev/null
           then
@@ -26,6 +26,7 @@ runs:
         shell: bash
 
       - name: Perform dry run of schemachange
+        if: ${{ github.workflow == 'schemachange dry run' }}
         run: |
           echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
@@ -47,7 +48,6 @@ runs:
           done
         shell: bash
 
-    auto-commit:
       - name: Check if schemachange is installed and install if not (Deploy)
         run: |
           if ! command -v schemachange &> /dev/null
