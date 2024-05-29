@@ -38,8 +38,7 @@ runs:
                 env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
                 echo "Processing environment: $env_path"
                 if [ ! -d "$env_path" ] || [ ! "$(ls -A $env_path)" ]; then
-                  echo "Config Folder for $db_name in environment $env does not exist or is empty."
-                  exit 1
+                  echo "No Config Folder for $db_name in environment $env"
                 else:
                   echo "Config Folder $env_path"
                 fi
