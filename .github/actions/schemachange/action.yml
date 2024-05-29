@@ -37,12 +37,8 @@ runs:
                 env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$env/$db_name
                 echo "Processing environment: $env_path"
                 if [ -d "$env_path" ]; then
-                  sub_env_path="$env_path/$db_name"
-                  if [ -d "$sub_env_path" ]; then
-                    sub_env_name=$(basename "$sub_env")
-                    echo "Script Folder ($db_name) --> $db_folder"
-                    echo "Config Folder ($sub_env_name) --> $sub_env_name"
-                  fi
+                  echo "Script Folder ($db_name) --> $db_folder"
+                  echo "Config Folder ($sub_env_name) --> $env_path"
                 fi
               done
             fi
