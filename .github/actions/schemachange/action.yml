@@ -1,5 +1,8 @@
 name: 'schemachange actions'
-description: 'This action installs schemachange if it is not already installed and performs a dry run.'
+description: 'schemachange dry run     --> a) Check if schemachange is installed and install if not
+                                           b) Perform dry run of schemachange
+              schemachange auto commit --> a) Check if schemachange is installed and install if not
+                                           b) Perform auto commit of schemachange'
 
 runs:
   using: 'composite'
