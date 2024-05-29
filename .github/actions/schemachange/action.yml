@@ -34,7 +34,7 @@ runs:
               db_name=$(basename "$db_folder")
               echo "Processing database folder: $db_name"
               for env in prod dev sit uat; do
-                env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$env
+                env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$env/$db_name
                 echo "Processing environment: $env_path"
                 if [ -d "$env_path" ]; then
                   sub_env_path="$env_path/$db_name"
