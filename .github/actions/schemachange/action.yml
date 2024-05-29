@@ -42,7 +42,8 @@ runs:
                 for env in prod dev sit uat; do
                   env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
                   if [ -d "$env_path" ]; then
-                    echo "Config Folder: $env_path"
+                    export SNOWFLAKE_PRIVATE_KEY_PATH="$env_path"
+                    echo "Here $SNOWFLAKE_PRIVATE_KEY_PATH"
                   fi
                 done
               fi
