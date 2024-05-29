@@ -14,10 +14,10 @@ runs:
               echo "schemachange is not installed. Installing..."
               if command -v pip &> /dev/null;
               then
-                  pip install schemachange
+                  pip install schemachange==3.6.1
               elif command -v pip3 &> /dev/null;
               then
-                  pip3 install schemachange
+                  pip3 install schemachange==3.6.1
               else
                   echo "Neither pip nor pip3 found. Unable to install schemachange."
                   exit 1
