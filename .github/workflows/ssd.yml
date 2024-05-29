@@ -26,5 +26,11 @@ jobs:
           name: ${{ github.event.inputs.name }}
           greeting: ${{ github.event.inputs.greeting }}
         env:
-          SNOWFLAKE_USER: 'ssd'
+          SNOWFLAKE_USERNAME: 'ssd'
           SNOWFLAKE_ENV:  'nonprod-us-eat-2'
+          SNOWFLAKE_ACCOUNT:  'TY1112.us-east-2.aws'
+          SNOWFLAKE_ROLE:  'developer'
+          SNOWFLAKE_WAREHOUSE: 'wh'
+          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ github.event.inputs.name }}
+          
+          
