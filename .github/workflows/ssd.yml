@@ -1,4 +1,4 @@
-name: Manual Dispatch and Actions Example
+name: schemachange dry run
 
 on:
   workflow_dispatch:
