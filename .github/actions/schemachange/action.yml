@@ -5,7 +5,7 @@ runs:
   using: 'composite'
   steps:
       - name: Check if schemachange is installed and install if not
-        if: ${{ github.event.workflow_run.path == '.github/workflows/ssd.yml' }}
+        if: contains(github.job.name, 'schemachange dry run')
         run: |
           if ! command -v schemachange &> /dev/null
           then
@@ -26,7 +26,7 @@ runs:
         shell: bash
 
       - name: Perform dry run of schemachange
-        if: ${{ github.event.workflow_run.path == '.github/workflows/ssd.yml' }}
+        if: contains(github.job.name, 'schemachange dry run')
         run: |
           echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
@@ -48,25 +48,6 @@ runs:
           done
         shell: bash
 
-      - name: Check if schemachange is installed and install if not (Deploy)
-        run: |
-          if ! command -v schemachange &> /dev/null
-          then
-              echo "schemachange is not installed. Installing..."
-              if command -v pip &> /dev/null
-              then
-                  pip install schemachange
-              elif command -v pip3 &> /dev/null
-              then
-                  pip3 install schemachange
-              else
-                  echo "Neither pip nor pip3 found. Unable to install schemachange."
-                  exit 1
-              fi
-          else
-              echo "schemachange is already installed."
-          fi
-        shell: bash
 
       - name: Perform deployment/auto commit of schemachange commands
         run: |
