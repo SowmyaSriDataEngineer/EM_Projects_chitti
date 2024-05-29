@@ -35,13 +35,15 @@ runs:
               echo "Processing database folder: $db_name"
               for env in prod dev sit uat; do
                 echo "Processing environment: $env"
-                for sub_env in ./instances/schemachange/config/$SNOWFLAKE_ENV/$env/*; do
-                  if [ -d "$sub_env" ]; then
+                env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$env
+                if [ -d "$env_path" ]; then
+                  sub_env_path="$env_path/$db_name"
+                  if [ -d "$sub_env_path" ]; then
                     sub_env_name=$(basename "$sub_env")
                     echo "Script Folder ($db_name) --> $db_folder"
-                    echo "sub_env Folder ($sub_env_name) --> $sub_env"
+                    echo "Config Folder ($sub_env_name) --> $sub_env_name"
                   fi
-                done
+                fi
               done
             fi
           done
