@@ -22,6 +22,9 @@ on:
           - Hi
           - Hey
 
+  pull_request:
+    types: [opened, reopened]
+
 jobs:
   execute_actions:
     runs-on: ubuntu-latest
