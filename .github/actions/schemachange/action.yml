@@ -36,7 +36,6 @@ runs:
               echo "Script Folder: $db_folder"
               for env in prod dev sit uat; do
                 env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
-                echo "Processing environment: $env_path"
                 if [ -d "$env_path" ]; then
                   echo "Config Folder: $env_path"
                 fi
