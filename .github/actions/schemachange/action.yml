@@ -29,7 +29,8 @@ runs:
           for db_folder in ./instances/schemachange/scripts/$catagory/*; do
             if [ -d "$db_folder" ]; then
                db_name=$(basename "$db_folder")
-               echo "Running schemachange deploy for $db_name in category $category"
+               category_location=$category
+               echo "Running schemachange deploy for $db_name in category $category_location"
             fi
           done
         done
