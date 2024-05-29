@@ -28,7 +28,7 @@ runs:
         shell: bash
 
       - name: Perform dry run of schemachange
-        if: github.workflow == 'schemachange dry run'
+        if: github.workflow == 'schemachange auto commit'
         run: |
           echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
