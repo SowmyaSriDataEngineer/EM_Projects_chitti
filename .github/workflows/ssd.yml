@@ -25,7 +25,6 @@ jobs:
         with:
           name: ${{ github.event.inputs.name }}
           greeting: ${{ github.event.inputs.greeting }}
-          action_type:  'dry-run'
         env:
           SNOWFLAKE_USER: 'ssd'
           SNOWFLAKE_ENV:  'nonprod-us-eat-2'
