@@ -1,4 +1,4 @@
-name: 'My Actions'
+name: 'schemachange actions'
 description: 'This action installs schemachange if it is not already installed and performs a dry run.'
 
 runs:
