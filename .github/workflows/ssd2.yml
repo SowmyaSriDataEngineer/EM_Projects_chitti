@@ -1,0 +1,46 @@
+name: schemachange auto commit
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_change_history_table:
+        description: 'Your name'
+        required: true
+        default: 'World'
+        type: choice
+        options:
+          - World
+          - Alice
+          - Bob
+      greeting:
+        description: 'Greeting message'
+        required: true
+        default: 'Hello'
+        type: choice
+        options:
+          - Hello
+          - Hi
+          - Hey
+
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  execute_actions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Execute Dry Run Action
+        uses: ./.github/actions/schemachange
+        env:
+          SNOWFLAKE_USERNAME: 'ssd'
+          SNOWFLAKE_ENV:  'nonprod-us-eat-2'
+          SNOWFLAKE_ACCOUNT:  'TY1112.us-east-2.aws'
+          SNOWFLAKE_ROLE:  'developer'
+          SNOWFLAKE_WAREHOUSE: 'wh'
+          SNOWFLAKE_PRIVATE_KEY_PATH: ${{ github.event.inputs.create_change_history_table }}
+          name:  ${{ github.event.inputs.create_change_history_table }}
+          
