@@ -36,7 +36,7 @@ runs:
               for env in prod dev sit uat; do
                 env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$env/$db_name
                 echo "Processing environment: $env_path"
-                if [ -d "$env_path" ] && [ "$(ls -A $env_path)" ]; then
+                if ![ -d "$env_path" ] && [ "$(ls -A $env_path)" ]; then
                   echo "Sowmya"
                 fi
               done
