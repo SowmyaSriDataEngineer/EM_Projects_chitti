@@ -5,7 +5,7 @@ runs:
   using: 'composite'
   steps:
       - name: Check if schemachange is installed and install if not
-        if: ${{ github.workflow == 'schemachange dry run' }}
+        if: ${{ github.workflow_filepath == '.github/workflows/manual-dispatch.yml' }}
         run: |
           if ! command -v schemachange &> /dev/null
           then
@@ -26,7 +26,7 @@ runs:
         shell: bash
 
       - name: Perform dry run of schemachange
-        if: ${{ github.workflow == 'schemachange dry run' }}
+        if: ${{ github.workflow_filepath == '.github/workflows/manual-dispatch.yml' }}
         run: |
           echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
