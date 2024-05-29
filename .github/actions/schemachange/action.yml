@@ -1,78 +1,74 @@
 name: 'My Actions'
 description: 'This action installs schemachange if it is not already installed and performs a dry run.'
+
 runs:
-  dry-run
   using: 'composite'
   steps:
-    - name: Check if schemachange is installed and install if not
-      run: |
-        if ! command -v schemachange &> /dev/null
-        then
-            echo "schemachange is not installed. Installing..."
-            if command -v pip &> /dev/null
-            then
-                pip install schemachange
-            elif command -v pip3 &> /dev/null
-            then
-                pip3 install schemachange
-            else
-                echo "Neither pip nor pip3 found. Unable to install schemachange."
-                exit 1
-            fi
-        else
-            echo "schemachange is already installed."
-        fi
-      shell: bash
+    dry-run:
+      - name: Check if schemachange is installed and install if not
+        run: |
+          if ! command -v schemachange &> /dev/null
+          then
+              echo "schemachange is not installed. Installing..."
+              if command -v pip &> /dev/null
+              then
+                  pip install schemachange
+              elif command -v pip3 &> /dev/null
+              then
+                  pip3 install schemachange
+              else
+                  echo "Neither pip nor pip3 found. Unable to install schemachange."
+                  exit 1
+              fi
+          else
+              echo "schemachange is already installed."
+          fi
+        shell: bash
 
-    - name: Perform dry run of schemachange
-      run: |
-        echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
+      - name: Perform dry run of schemachange
+        run: |
+          echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
-        for category in versioned repeatable always; do
-          echo "Processing category: $category"
-          for db_folder in ./instances/schemachange/scripts/$category/*; do
-            if [ -d "$db_folder" ]; then
-              db_name=$(basename "$db_folder")
-              echo "Processing database folder: $db_name"
-              echo "Script Folder: $db_folder"
-              for env in prod dev sit uat; do
-                env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
-                if [ -d "$env_path" ]; then
-                  echo "Config Folder: $env_path"
-                fi
-              done
-            fi
+          for category in versioned repeatable always; do
+            echo "Processing category: $category"
+            for db_folder in ./instances/schemachange/scripts/$category/*; do
+              if [ -d "$db_folder" ]; then
+                db_name=$(basename "$db_folder")
+                echo "Processing database folder: $db_name"
+                echo "Script Folder: $db_folder"
+                for env in prod dev sit uat; do
+                  env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
+                  if [ -d "$env_path" ]; then
+                    echo "Config Folder: $env_path"
+                  fi
+                done
+              fi
+            done
           done
-        done
-      shell: bash
+        shell: bash
 
-  auto-commit
-    using: 'composite'
-    steps:
-    - name: Check if schemachange is installed and install if not (Deploy)
-      run: |
-        if ! command -v schemachange &> /dev/null
-        then
-            echo "schemachange is not installed. Installing..."
-            if command -v pip &> /dev/null
-            then
-                pip install schemachange
-            elif command -v pip3 &> /dev/null
-            then
-                pip3 install schemachange
-            else
-                echo "Neither pip nor pip3 found. Unable to install schemachange."
-                exit 1
-            fi
-        else
-            echo "schemachange is already installed."
-        fi
-      shell: bash
+    auto-commit:
+      - name: Check if schemachange is installed and install if not (Deploy)
+        run: |
+          if ! command -v schemachange &> /dev/null
+          then
+              echo "schemachange is not installed. Installing..."
+              if command -v pip &> /dev/null
+              then
+                  pip install schemachange
+              elif command -v pip3 &> /dev/null
+              then
+                  pip3 install schemachange
+              else
+                  echo "Neither pip nor pip3 found. Unable to install schemachange."
+                  exit 1
+              fi
+          else
+              echo "schemachange is already installed."
+          fi
+        shell: bash
 
-    - name: Perform deployment/auto commit of schemachange commands
-      run: |
-        echo "Performing Deployment"
-      shell:  bash
-
-    
-  
+      - name: Perform deployment/auto commit of schemachange commands
+        run: |
+          echo "Performing Deployment"
+        shell: bash
