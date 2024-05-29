@@ -59,7 +59,7 @@ runs:
 
 
       - name: Perform deployment/auto commit of schemachange commands
-        if: github.workflow != 'schemachange auto commit'
+        if: github.workflow == 'schemachange auto commit'
         run: |
           echo "Performing Deployment"
         shell: bash
