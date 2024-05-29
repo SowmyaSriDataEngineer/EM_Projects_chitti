@@ -45,7 +45,7 @@ runs:
                   env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
                   if [ -d "$env_path" ]; then
                     export SNOWFLAKE_PRIVATE_KEY_PATH="$SNOWFLAKE_PRIVATE_KEY_PATH"
-                    if [[ "$name" == "Sowmya" ]]; 
+                    if [[ "$name" == "World" ]]; 
                     then
                       echo "Reached Here"
                       schemachange deploy -f "$db_folder" -a "$SNOWFLAKE_ACCOUNT" -u "$SNOWFLAKE_USERNAME" -r "$SNOWFLAKE_ROLE" --config_folder "$env_path" -w "$SNOWFLAKE_WAREHOUSE" -d "$db_name" -c "$db_name.SCHEMACHANGE.CHANGE_HISTORY" --dry-run
