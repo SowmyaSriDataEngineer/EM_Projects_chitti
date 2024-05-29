@@ -20,11 +20,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Execute Main Action (Install and Dry Run)
-        uses: ./.github/actions/schemachange
-        env:
-          SNOWFLAKE_USER: 'ssd'
-
       - name: Execute Dry Run Action
         uses: ./.github/actions/schemachange
         with:
