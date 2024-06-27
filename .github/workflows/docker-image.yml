@@ -4,36 +4,35 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  workflow_dispatch:   # Allow manual triggering
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    - name: Get JFrog Access Token
-      id: get_token
-      env:
-        JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
-        JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
-        JFROG_API_KEY: ${{ secrets.JFROG_API_KEY }}
-      run: |
-        response=$(curl -s -X POST -u "${JFROG_USERNAME}:${JFROG_API_KEY}" "${JFROG_BASE_URL}/artifactory/api/security/token")
-        echo "::set-output name=token::$(echo $response | jq -r .access_token)"
+      - name: Get JFrog Identity Token
+        id: get_token
+        env:
+          JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
+          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
+        run: |
+          echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
 
-    - name: Log in to JFrog Artifactory
-      run: |
-        echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+      - name: Log in to JFrog Artifactory
+        run: |
+          echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.JFROG_REGISTRY }}/my-docker-repo/schemachange:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.JFROG_REGISTRY }}/my-docker-repo/schemachange:latest
