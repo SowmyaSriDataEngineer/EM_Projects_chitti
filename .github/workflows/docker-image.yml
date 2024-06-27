@@ -36,3 +36,40 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.JFROG_REGISTRY }}schemachange-docker/schemachange:1.1.0
+          
+      - name: Log in to JFrog Artifactory
+        run: docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange-docker/schemachange:1.1.0   # Replace with your custom tag
+
+
+      - name: Perform dry run of schemachange
+        if: github.workflow == 'schemachange dry run'
+        run: |
+          echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
+
+          for category in versioned repeatable always; do
+            echo $name
+            echo "$greeting"
+            echo "Processing category: $category"
+            for db_folder in ./instances/schemachange/scripts/$category/*; do
+              if [ -d "$db_folder" ]; then
+                db_name=$(basename "$db_folder")
+                echo "Processing database folder: $db_name"
+                echo "Script Folder: $db_folder"
+                for env in prod dev sit uat; do
+                  env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
+                  if [ -d "$env_path" ]; then
+                    export SNOWFLAKE_PRIVATE_KEY_PATH="$SNOWFLAKE_PRIVATE_KEY_PATH"
+                    if [[ "$name" == "World" ]]; 
+                    then
+                      echo "Reached Here"
+                      schemachange deploy -f "$db_folder" -a "$SNOWFLAKE_ACCOUNT" -u "$SNOWFLAKE_USERNAME" -r "$SNOWFLAKE_ROLE" --config_folder "$env_path" -w "$SNOWFLAKE_WAREHOUSE" -d "$db_name" -c "$db_name.SCHEMACHANGE.CHANGE_HISTORY" --dry-run
+                    fi
+                  fi
+                done
+              fi
+            done
+          done
+        shell: bash
