@@ -1,5 +1,14 @@
-FROM python:3.9
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
 
-RUN pip install schemachange
+# Set the working directory in the container
+WORKDIR /app
 
-ENTRYPOINT schemachange
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install schemachange
+RUN pip install --no-cache-dir schemachange
+
+# Define default command
+CMD ["schemachange"]
