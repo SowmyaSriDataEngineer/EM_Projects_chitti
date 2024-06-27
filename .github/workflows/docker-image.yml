@@ -35,4 +35,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
+          tags: ${{ secrets.JFROG_REGISTRY }}schemachange-docker/schemachange:1.1.0
