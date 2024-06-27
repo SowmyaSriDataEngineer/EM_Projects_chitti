@@ -7,25 +7,12 @@ description: 'schemachange dry run     --> a) Check if schemachange is installed
 runs:
   using: 'composite'
   steps:
-      - name: Check if schemachange is installed and install if not
-        run: |
-          if ! command -v schemachange &> /dev/null;
-          then
-              echo "schemachange is not installed. Installing..."
-              if command -v pip &> /dev/null;
-              then
-                  pip install schemachange==3.6.1
-              elif command -v pip3 &> /dev/null;
-              then
-                  pip3 install schemachange==3.6.1
-              else
-                  echo "Neither pip nor pip3 found. Unable to install schemachange."
-                  exit 1
-              fi
-          else
-              echo "schemachange is already installed."
-          fi
-        shell: bash
+      - name: Log in to JFrog Artifactory
+        run: echo ${{ secrets.JFROG_IDENTITY_TOKEN }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/my-docker-repo/schemachange:custom-tag   # Replace with your custom tag
+
 
       - name: Perform dry run of schemachange
         if: github.workflow == 'schemachange dry run'
