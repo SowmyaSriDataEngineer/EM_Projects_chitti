@@ -37,9 +37,6 @@ jobs:
           push: true
           tags: ${{ secrets.JFROG_REGISTRY }}schemachange-docker/schemachange:1.1.0
           
-      - name: Log in to JFrog Artifactory
-        run: docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
-
       - name: Pull Docker image
         run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange-docker/schemachange:1.1.0   # Replace with your custom tag
 
