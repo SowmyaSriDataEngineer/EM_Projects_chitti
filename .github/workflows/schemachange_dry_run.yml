@@ -1,0 +1,50 @@
+name: schemachange dry run
+run-name: schemachange dry run for region: ${{inputs.region}} --> database environment ${{inputs.database_environment}}
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_chnage_history_table:
+        default: 'yes'
+        type: choice
+        description: 'Do you want to create change history table?'
+        options:
+          - 'yes'
+          - 'no'
+      region:
+        type: choice
+        description: 'Select the account region?'
+        options:
+          - 'prod-ap-south-1'
+          - 'prod-us-east-2'
+          - 'nonprod-us-east-2'
+          - 'prod-eu-west-1'
+      database_environment:
+        type: choice
+        description: 'Select the environment type of database?'
+        options:
+          - 'prod'
+          - 'staging'
+          - 'dev'
+          - 'sit'
+          - 'uat'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate_input_selection:
+    name: Validation of Region and Database environment type
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate Inputs
+        id: validate
+        run: |
+          #Get Inputs
+          REGION=${{github.event.input.region}}
+          DB_ENV=${{github.event.input.database_environment}}
+          echo "Your Selection is as below:"
+          echo "Region: $REGION"
+          echo "Database Environment: $database_environment"
+    
