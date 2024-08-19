@@ -1,4 +1,4 @@
-name: schemachange dry run
+name: schemachange dry run --> Sowmya
 run-name: schemachange dry run for region: ${{inputs.region}} --> database environment ${{inputs.database_environment}}
 
 on:
