@@ -1,5 +1,5 @@
 name: schemachange dry run 2
-run-name: schemachange dry run for region: ${{inputs.region}} --> database environment ${{inputs.database_environment}}
+run-name: schemachange dry run for region ${{inputs.region}} --> database environment ${{inputs.database_environment}}
 
 on:
   workflow_dispatch:
