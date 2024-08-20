@@ -1,6 +1,9 @@
 name: Pull Docker Image and Run schemachange Dry Run
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:   # Allow manual triggering
 
 jobs:
@@ -33,8 +36,9 @@ jobs:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
-           docker run --rm \
+            echo ${{ github.workspace }}
+             docker run --rm \
             ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
             schemachange deploy --config-folder ${{ github.workspace }}/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
-            -f ${{ github.workspace }}./instances/schemachange/scripts/versioned/sowmya_db:/scripts \
+            -f ${{ github.workspace }}/instances/schemachange/scripts/versioned/sowmya_db:/scripts \
             --dry-run
