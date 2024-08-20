@@ -1,0 +1,37 @@
+name: Pull Docker Image and Run schemachange Dry Run
+
+on:
+  workflow_dispatch:   # Allow manual triggering
+
+jobs:
+  run_schemachange:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get JFrog Identity Token
+        id: get_token
+        env:
+          JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
+          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
+        run: |
+          echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
+
+      - name: Log in to JFrog Artifactory
+        run: |
+          echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
+
+      - name: Run schemachange dry run
+        id: schemachange
+        run: |
+          docker run -rm \
+            -e SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USER }}
+            -e SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD }} \
+            ${{ secrets.JFROG_REGISTRY }}/schemachange/latest \
+            schemachange deploy -f /instances/schemachange/scripts/versioned/sowmya_db --config_folder /instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod -u $SNOWFLAKE_USER --dry-run
