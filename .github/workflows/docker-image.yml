@@ -1,6 +1,9 @@
 name: Build and Push Docker Image to JFrog
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:   # Allow manual triggering
 
 jobs:
@@ -17,18 +20,17 @@ jobs:
       - name: Get JFrog Identity Token
         id: get_token
         env:
+          JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
           JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
           echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
-
       - name: Log in to JFrog Artifactory
         run: |
-          docker login https://sowmya018.jfrog.io/artifactory/schemachange-docker-docker/ -u sowmya018 --password-stdin f57072f3-2964-4800-a261-991fc516f4d3
-
+          echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.JFROG_REGISTRY }}schemachange:latest
+          tags: ${{ secrets.JFROG_REGISTRY }}schemachange-docker/schemachange:1.1.0
