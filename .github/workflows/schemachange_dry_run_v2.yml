@@ -29,13 +29,12 @@ jobs:
  
       - name: Run schemachange dry run
         id: schemachange
-        shell: bash
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
            docker run --rm \
             ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
-            schemachange deploy -v --config-folder ${{ github.workspace }}/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
+            schemachange deploy --config-folder ${{ github.workspace }}/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
             -f ${{ github.workspace }}./instances/schemachange/scripts/versioned/sowmya_db:/scripts \
             --dry-run
