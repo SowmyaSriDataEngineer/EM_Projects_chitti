@@ -23,7 +23,6 @@ jobs:
         run: |
           echo $JFROG_BASE_URL
           echo $JFROG_USERNAME
-          echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
 
       - name: Log in to JFrog Artifactory
         run: |
