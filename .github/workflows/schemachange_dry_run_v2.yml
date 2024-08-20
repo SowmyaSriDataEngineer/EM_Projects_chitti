@@ -41,4 +41,4 @@ jobs:
           deploy \
           -f ./instances/schemachange/scripts/versioned/sowmya_db \
           --config-folder ./instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
-          -u $SNOWFLAKE_USER --dry-run
+          -u $SNOWFLAKE_USER -ac
