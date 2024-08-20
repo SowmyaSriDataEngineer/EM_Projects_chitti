@@ -39,6 +39,6 @@ jobs:
           docker run --rm -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
           ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
           deploy \
-          -f ./instances/schemachange/scripts/versioned/sowmya_db \
-          --config-folder ./instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
+          -f /app/instances/schemachange/scripts/versioned/sowmya_db \
+          --config-folder /app/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
           -u $SNOWFLAKE_USER -ac
