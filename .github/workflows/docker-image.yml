@@ -24,7 +24,7 @@ jobs:
 
       - name: Log in to JFrog Artifactory
         run: |
-          docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin ${{JFROG_IDENTITY_TOKEN}}
+          docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin ${{secrets.JFROG_IDENTITY_TOKEN}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
