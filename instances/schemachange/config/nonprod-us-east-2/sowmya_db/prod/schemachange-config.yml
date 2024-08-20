@@ -1,6 +1,5 @@
 config-version: 1
 
-root-folder: './instances/schemachange/scripts/versioned/sowmya_db/scripts'
 snowflake-account: 'ne99457.ap-southeast-1'
 snowflake-warehouse: 'COMPUTE_WH'
 snowflake-database: 'SOWMYA_DB'
