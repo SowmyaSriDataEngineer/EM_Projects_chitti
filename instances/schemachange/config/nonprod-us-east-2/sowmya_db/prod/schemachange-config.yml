@@ -1,11 +1,11 @@
 config-version: 1
 
 
-snowflake_account: 'ne99457.ap-southeast-1'
-snowflake_warehouse: 'COMPUTE_WH'
-snowflake_database: 'SOWMYA_DB'
-snowflake_schema: null
-snowflake_role: 'ACCOUNTADMIN'
+snowflake-account: 'ne99457.ap-southeast-1'
+snowflake-warehouse: 'COMPUTE_WH'
+snowflake-database: 'SOWMYA_DB'
+snowflake-schema: null
+snowflake-role: 'ACCOUNTADMIN'
 change-history-table: 'SOWMYA_DB.SCHEMACHANGE.CHANGE_HISTORY'
 create-change-history-table: true
 
