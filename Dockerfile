@@ -8,8 +8,8 @@ WORKDIR /intances/schemachange
 COPY . /instances/schemachange
 
 # Install schemachange
-RUN pip install --no-cache-dir schemachange
+RUN pip install schemachange
 
 # Define the default command to run schemachange
-ENTRYPOINT ["schemachange"]
+ENTRYPOINT schemachange
 
