@@ -41,7 +41,7 @@ jobs:
           SNOWFLAKE_ROLE: ACCOUNTADMIN
         run: |
             
-            docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest /bin/bash -c "schemachange deploy -f /app/instances/schemachange/scripts/versioned/sowmya_db/scripts --config-folder /app/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod --dry-run"
+            docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest schemachange deploy -f /app/instances/schemachange/scripts/versioned/sowmya_db/scripts --config-folder /app/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod --dry-run
 
             
             
