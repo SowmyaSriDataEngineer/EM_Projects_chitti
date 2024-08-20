@@ -13,4 +13,4 @@ RUN pip install --no-cache-dir schemachange
 # Define the default command to run schemachange
 ENTRYPOINT ["schemachange"]
 
-CMD ["deploy", "--config", "/config/schemachange-config.yml", "--scripts", "/scripts"]
+CMD ["schemachange deploy", "schemachange"]
