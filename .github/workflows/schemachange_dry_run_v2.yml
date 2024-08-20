@@ -38,6 +38,6 @@ jobs:
             -v ${{ github.workspace }}/instances/config/nonprod-us-east-2/sowmya_db/prod:/config \
             -v ${{ github.workspace }}./instances/scripts/versioned/sowmya_db:/scripts \
             ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
-            schemachange -c /config/nonprod-us-east-2/sowmya_db/prod/schemachange-config.yml \
+            schemachange deploy -v --config-folder /config \
             -f /scripts \
             --dry-run
