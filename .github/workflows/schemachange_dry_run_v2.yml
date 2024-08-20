@@ -34,4 +34,4 @@ jobs:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
-            which schemachange
+            docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest schemachange --help
