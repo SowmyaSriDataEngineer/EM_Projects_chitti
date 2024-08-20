@@ -24,7 +24,7 @@ jobs:
 
       - name: Log in to JFrog Artifactory
         run: |
-          docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin ${{secrets.JFROG_IDENTITY_TOKEN}}
+          docker login https://sowmya018.jfrog.io/artifactory/schemachange-docker-docker/ -u sowmya018 --password-stdin f57072f3-2964-4800-a261-991fc516f4d3
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
