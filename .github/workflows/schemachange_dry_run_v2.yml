@@ -45,7 +45,4 @@ jobs:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
             docker run --rm \
-            --name schemachange-script \
-            -v "$PWD":/usr/src/schemachange \
-            -w /usr/src/schemachange \
-            python:3 /bin/bash -c "schemachange deploy -f ./instances/scripts/versioned/sowmya_db --config-folder ./instances/config/nonprod-us-east-2/sowmya_db/prod -a ne99457.ap-southeast-1 -u sowmya018 -r ACCOUNTADMIN -w COMPUTE_WH --dry-run"
+            schemachange deploy -f ./instances/scripts/versioned/sowmya_db --config-folder ./instances/config/nonprod-us-east-2/sowmya_db/prod -a ne99457.ap-southeast-1 -u sowmya018 -r ACCOUNTADMIN -w COMPUTE_WH --dry-run
