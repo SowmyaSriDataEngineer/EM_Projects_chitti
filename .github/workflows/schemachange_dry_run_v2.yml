@@ -25,12 +25,9 @@ jobs:
           echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
       - name: Pull Docker image
-        run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
-
-      - name: Run schemachange dry run
-        id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
+            docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
             schemachange deploy -f /instances/schemachange/scripts/versioned/sowmya_db --config_folder /instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod -u $SNOWFLAKE_USER --dry-run
