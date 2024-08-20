@@ -33,8 +33,4 @@ jobs:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
-            docker run -it --rm \
-            --name schemachange-script \
-            -v "$PWD":/usr/src/schemachange \
-            -w /usr/src/schemachange \
-            python:3 /bin/bash -c "schemachange --help"
+            schemachange --help
