@@ -32,7 +32,6 @@ jobs:
  
       - name: Run schemachange dry run
         id: schemachange
-        shell: bash
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
