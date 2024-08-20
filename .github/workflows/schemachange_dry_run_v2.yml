@@ -35,7 +35,12 @@ jobs:
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ne99457.ap-southeast-1
+          SNOWFLAKE_DATABASE: SOWMYA_DB
+          SNOWFLAKE_WAREHOUSE: COMPUTE_WH
+          SNOWFLAKE_ROLE: ACCOUNTADMIN
         run: |
+            
             docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest /bin/bash -c "schemachange deploy -f /app/instances/schemachange/scripts/versioned/sowmya_db/scripts --config-folder /app/instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod --dry-run"
 
             
