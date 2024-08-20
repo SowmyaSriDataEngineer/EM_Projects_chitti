@@ -38,3 +38,4 @@ jobs:
         run: |
             docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest schemachange --help
             
+            
