@@ -1,0 +1,1 @@
+CREATE or REPLACE DATABASE sowmya_db;
