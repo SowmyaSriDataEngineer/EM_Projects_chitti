@@ -19,7 +19,7 @@ jobs:
 
       - name: Log in to JFrog Artifactory Docker registry
         run: |
-           docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin ${{ secrets.JFROG_IDENTITY_TOKEN }}
+           docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password ${{ secrets.JFROG_IDENTITY_TOKEN }}
 
       - name: Build Docker image
         run: |
