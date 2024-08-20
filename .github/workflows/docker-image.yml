@@ -17,7 +17,6 @@ jobs:
       - name: Get JFrog Identity Token
         id: get_token
         env:
-          JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
           JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
@@ -25,7 +24,7 @@ jobs:
 
       - name: Log in to JFrog Artifactory
         run: |
-          echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+          docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin ${{JFROG_IDENTITY_TOKEN}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
