@@ -9,4 +9,4 @@ COPY instances/schemachange /app/instances/schemachange
 RUN pip install schemachange
 
 # Define the default command to run schemachange
-ENTRYPOINT ["schemachange"]
+ENTRYPOINT schemachange
