@@ -38,6 +38,6 @@ jobs:
         run: |
           docker run --rm ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
           deploy \
-          -f ./instances/schemachange/scripts/versioned/sowmya_db/scripts \
+          -f ./instances/schemachange/scripts/versioned/sowmya_db \
           --config-folder ./instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
           --dry-run
