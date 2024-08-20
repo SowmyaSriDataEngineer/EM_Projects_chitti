@@ -2,10 +2,10 @@
 FROM python:3.10-slim
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /intances/schemachange
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY . /instances/schemachange
 
 # Install schemachange
 RUN pip install --no-cache-dir schemachange
