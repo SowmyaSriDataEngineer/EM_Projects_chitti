@@ -5,7 +5,7 @@ FROM python:3.10-slim
 WORKDIR /intances/schemachange
 
 # Copy the current directory contents into the container at /app
-COPY . /instances/schemachange
+COPY . ./instances/schemachange
 
 # Install schemachange
 RUN pip install schemachange
