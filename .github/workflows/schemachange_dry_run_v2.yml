@@ -30,7 +30,7 @@ jobs:
       - name: Run schemachange dry run
         id: schemachange
         run: |
-          docker run -rm \
+          docker run --rm \
             -e SNOWFLAKE_USER=${{ secrets.SNOWFLAKE_USER }}
             -e SNOWFLAKE_PASSWORD=${{ secrets.SNOWFLAKE_PASSWORD }} \
             ${{ secrets.JFROG_REGISTRY }}/schemachange/latest \
