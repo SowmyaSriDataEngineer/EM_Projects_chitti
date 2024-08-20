@@ -5,5 +5,4 @@ FROM python:3.10
 RUN pip install schemachange
 
 # Define the default command to run schemachange
-ENTRYPOINT schemachange
-
+CMD ["schemachange"]
