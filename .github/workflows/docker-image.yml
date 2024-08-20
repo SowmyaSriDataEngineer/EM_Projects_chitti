@@ -24,13 +24,17 @@ jobs:
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
           JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
+          echo JFROG_BASE_URL
+          echo JFROG_USERNAME
           echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
+
       - name: Log in to JFrog Artifactory
         run: |
           echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.JFROG_REGISTRY }}schemachange-docker/schemachange:1.1.0
+          tags: ${{ secrets.JFROG_REGISTRY }}/schemachange-docker/schemachange:1.1.0
