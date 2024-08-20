@@ -6,5 +6,3 @@ RUN pip install schemachange
 
 # Define the default command to run schemachange
 ENTRYPOINT schemachange
-
-CMD ["deploy","--help"]
