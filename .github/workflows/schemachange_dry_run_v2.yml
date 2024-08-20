@@ -35,9 +35,7 @@ jobs:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
            docker run --rm \
-            -v ${{ github.workspace }}/instances/config/nonprod-us-east-2/sowmya_db/prod:/config \
-            -v ${{ github.workspace }}./instances/scripts/versioned/sowmya_db:/scripts \
             ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
-            schemachange deploy -v --config-folder /config \
-            -f /scripts \
+            schemachange deploy -v --config-folder ${{ github.workspace }}/instances/config/nonprod-us-east-2/sowmya_db/prod \
+            -f ${{ github.workspace }}./instances/scripts/versioned/sowmya_db:/scripts \
             --dry-run
