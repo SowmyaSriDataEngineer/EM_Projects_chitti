@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to JFrog Artifactory
+name: V2-Build and Push Docker Image to JFrog Artifactory
 
 on:
   push:
