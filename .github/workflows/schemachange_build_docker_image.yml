@@ -1,4 +1,4 @@
-name: schemachange docker image
+name: Build schemachange Docker Image
 run-name: Build schemachange Docker Image in JFrog
 
 on:
