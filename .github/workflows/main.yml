@@ -1,4 +1,5 @@
-name: Sample Inputs
+name: Pull and Dry Run Schemachange Docker Image
+run-name: schemachange dry run
 
 on:
   workflow_dispatch:
