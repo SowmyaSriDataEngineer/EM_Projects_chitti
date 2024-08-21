@@ -1,5 +1,5 @@
 name: schemachange auto commit
-run-name: Pull and Auto Commit schemachange Docker Image
+run-name: Pull docker image and auto commit schemachange scripts
 
 on:
   workflow_dispatch:
