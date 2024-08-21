@@ -11,6 +11,11 @@ on:
           - 'versioned'
           - 'always'
           - 'repeatable'
+      folder:
+        description: 'Select specific folder'
+        required: true
+        type: choice
+        options: []
 
 
 jobs:
