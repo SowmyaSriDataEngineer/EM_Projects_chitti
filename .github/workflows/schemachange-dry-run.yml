@@ -1,5 +1,5 @@
-name: Pull and Dry Run Schemachange Docker Image
-run-name: schemachange dry run
+name: schemachange dry run
+run-name: Pull and Dry Run Schemachange Docker Image
 
 on:
   workflow_dispatch:
