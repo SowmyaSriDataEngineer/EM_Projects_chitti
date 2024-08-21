@@ -59,12 +59,15 @@ jobs:
         run: |
           echo "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}" | base64 -d > ~/snowflake_service_user_private_key.p8
           chmod 600 ~/snowflake_service_user_private_key.p8
+
+      - name: List files in home directory
+        run: ls -la /home/runner
  
       - name: Run schemachange dry run
         id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PRIVATE_KEY_PATH: ~/snowflake_service_user_private_key.p8
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/snowflake_service_user_private_key.p8
           SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
