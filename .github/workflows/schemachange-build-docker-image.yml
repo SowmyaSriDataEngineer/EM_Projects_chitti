@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./instances/schemachange
-          file: ./instances/schemachange/Dockerfile
+          file: ./instances/schemachange/DockerFile
           push: true
           tags:  ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
