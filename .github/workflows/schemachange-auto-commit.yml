@@ -1,0 +1,88 @@
+name: schemachange auto commit
+run-name: Pull and Auto Commit schemachange Docker Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      account_region:
+        description: 'Select Snowflake Account Region:'
+        required: true
+        type: choice
+        options:
+          - 'nonprod-us-east-2'
+          - 'prod-us-east-2'
+          - 'prod-eu-west-1'
+          - 'prod-ap-south-1'
+      db_env:
+        description: 'Select the type of database environment as per above region(it selects the associated config file)'
+        required: true
+        type: choice
+        options:
+          - 'prod'
+          - 'dev'
+          - 'staging'
+          - 'uat'
+          - 'sit'
+          - 'account_level'
+      dir_type:
+        description: 'Select type of scripts:'
+        required: true
+        type: choice
+        options:
+          - 'versioned'
+          - 'always'
+          - 'repeatable'
+      db_folder_name:
+        description: 'Enter the sub-folder under the selected type'
+        required: true
+        type: string
+
+jobs:     
+  run_schemachange:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ secrets.JFROG_REGISTRY }}
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_IDENTITY_TOKEN }}
+      
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
+ 
+      - name: Run schemachange dry run
+        id: schemachange_dry_run
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
+          -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
+          ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
+          deploy \
+          -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
+          --config-folder /instances/schemachange/config/nonprod-us-east-2/${{ github.event.inputs.db_folder_name }}/${{ github.event.inputs.db_env }} \
+          -u $SNOWFLAKE_USER --dry-run
+
+      - name: Run schemachange auto commit
+        id: schemachange_auto_commit
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
+          -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
+          ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
+          deploy \
+          -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
+          --config-folder /instances/schemachange/config/nonprod-us-east-2/${{ github.event.inputs.db_folder_name }}/${{ github.event.inputs.db_env }} \
+          -u $SNOWFLAKE_USER -ac
+          
+      - name: Clear Docker config after use
+        run: |
+          rm -f ~/.docker/config.json
