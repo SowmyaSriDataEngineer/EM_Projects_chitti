@@ -25,6 +25,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./instances/schemachange
+          file: ./instances/schemachange/Dockerfile
           push: true
           tags:  ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
