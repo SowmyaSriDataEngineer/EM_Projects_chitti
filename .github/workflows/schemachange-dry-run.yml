@@ -67,11 +67,11 @@ jobs:
         id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/snowflake_service_user_private_key.p8
           SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
-          -e SNOWFLAKE_PRIVATE_KEY_PATH=$SNOWFLAKE_PRIVATE_KEY_PATH \
+          -v /home/runner/snowflake_service_user_private_key.p8:/home/runner/snowflake_service_user_private_key.p8 \
+          -e SNOWFLAKE_PRIVATE_KEY_PATH=/home/runner/snowflake_service_user_private_key.p8 \
           ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
           deploy \
           -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
