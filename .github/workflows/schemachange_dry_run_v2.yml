@@ -9,18 +9,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Get JFrog Identity Token
-        id: get_token
-        env:
-          JFROG_BASE_URL: ${{ secrets.JFROG_BASE_URL }}
-          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
-          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
-        run: |
-          echo "::set-output name=token::${JFROG_IDENTITY_TOKEN}"
+        uses: actions/checkout@v4
 
       - name: Log in to JFrog Artifactory
+        env:
+          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
           echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
