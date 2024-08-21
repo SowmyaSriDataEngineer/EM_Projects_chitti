@@ -1,0 +1,36 @@
+name: Sample Inputs
+
+on:
+  workflow_dispatch:
+    inputs:
+      dir_type:
+        description: 'Select type of scripts'
+        required: true
+        type: choice
+        options:
+          - 'versioned'
+          - 'always'
+          - 'repeatable'
+      db_folder_script:
+        description: 'Enter the sub-folder under the selected type'
+        required: true
+        type: string
+
+jobs:
+  list_folders:
+    runs-on: ubuntu-latest
+    outputs:
+      directories: ${{ steps.list_folders.outputs.options }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: List folders
+        id: list_folders
+        uses: ./.github/actions/schemachange
+        with:
+          dir_type: ${{ github.event.inputs.dir_type }}
+
+      - name: Set options for next step
+        id: set_options
+        run: echo "::set-output name=options::${{ steps.list_folders.outputs.options }}"
