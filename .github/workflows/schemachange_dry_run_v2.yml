@@ -19,6 +19,36 @@ on:
 
 
 jobs:
+
+  prepare_folders:
+    runs-on: ubuntu-latest
+    outputs:
+      folders: ${{ steps.get_folders.outputs.folders }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: List folders
+        id: get_folders
+        run: |
+          dir_type=${{ github.event.inputs.dir_type }}
+          if [ "$dir_type" = "versioned" ]; then
+            folders=$(ls -d ./instances/schemachange/scripts/versioned/*/ | xargs -n 1 basename)
+          elif [ "$dir_type" = "always" ]; then
+            folders=$(ls -d ./instances/schemachange/scripts/always/*/ | xargs -n 1 basename)
+          elif [ "$dir_type" = "repeatable" ]; then
+            folders=$(ls -d ./instances/schemachange/scripts/repeatable/*/ | xargs -n 1 basename)
+          else
+            folders=""
+          fi
+          echo "::set-output name=folders::$folders"
+
+      - name: Set folder options
+        id: set_folder_options
+        run: |
+          echo "Available folders:"
+          echo "${{ steps.get_folders.outputs.folders }}"
+          
   run_schemachange:
     runs-on: ubuntu-latest
 
