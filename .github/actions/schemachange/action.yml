@@ -1,0 +1,26 @@
+name: 'List Folders'
+description: 'Lists directories based on user selection.'
+
+inputs:
+  dir_type:
+    description: 'Type of directories to list'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: List directories
+      id: list_dirs
+      run: |
+        ./list-folders.sh ${{ inputs.dir_type }} > directories.txt
+        cat directories.txt
+
+    - name: Set output for dynamic options
+      id: set_output
+      run: |
+        options=$(cat directories.txt | tr '\n' ',')
+        echo "::set-output name=options::$options"
