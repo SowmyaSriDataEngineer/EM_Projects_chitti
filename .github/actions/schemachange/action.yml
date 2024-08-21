@@ -1,36 +1,52 @@
-name: Update Directory Options
+name: 'schemachange actions'
+description: 'schemachange dry run     --> a) Check if schemachange is installed and install if not
+                                           b) Perform dry run of schemachange
+              schemachange auto commit --> a) Check if schemachange is installed and install if not
+                                           b) Perform auto commit of schemachange'
 
-on:
-  workflow_dispatch:
-  
-jobs:
-  update_workflow:
-    runs-on: ubuntu-latest
+runs:
+  using: 'composite'
+  steps:
+      - name: Log in to JFrog Artifactory
+        run: echo ${{ secrets.JFROG_IDENTITY_TOKEN }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
-    steps:
-      - name: Checkout workflow repo
-        uses: actions/checkout@v4
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/my-docker-repo/schemachange:custom-tag   # Replace with your custom tag
 
-      - name: List directories
-        id: list_dirs
+
+      - name: Perform dry run of schemachange
+        if: github.workflow == 'schemachange dry run'
         run: |
-          chmod +x ./scripts/list_dirs.sh
-          ./scripts/list_dirs.sh > directories.txt
+          echo "Performing dry run of schemachange for user $SNOWFLAKE_USER..."
 
-      - name: Update workflow file
-        run: |
-          # Read the directories
-          dirs=$(cat directories.txt)
-          # Generate options list
-          options=$(echo "$dirs" | sed "s/^/- '/")
-          # Update the workflow YAML file with new options
-          sed -i "/options:/,/^$/d" .github/workflows/main.yml
-          sed -i "/workflow_dispatch:/a \ \ \ \ options:\n$options" .github/workflows/main.yml
+          for category in versioned repeatable always; do
+            echo $name
+            echo "$greeting"
+            echo "Processing category: $category"
+            for db_folder in ./instances/schemachange/scripts/$category/*; do
+              if [ -d "$db_folder" ]; then
+                db_name=$(basename "$db_folder")
+                echo "Processing database folder: $db_name"
+                echo "Script Folder: $db_folder"
+                for env in prod dev sit uat; do
+                  env_path=./instances/schemachange/config/$SNOWFLAKE_ENV/$db_name/$env
+                  if [ -d "$env_path" ]; then
+                    export SNOWFLAKE_PRIVATE_KEY_PATH="$SNOWFLAKE_PRIVATE_KEY_PATH"
+                    if [[ "$name" == "World" ]]; 
+                    then
+                      echo "Reached Here"
+                      schemachange deploy -f "$db_folder" -a "$SNOWFLAKE_ACCOUNT" -u "$SNOWFLAKE_USERNAME" -r "$SNOWFLAKE_ROLE" --config_folder "$env_path" -w "$SNOWFLAKE_WAREHOUSE" -d "$db_name" -c "$db_name.SCHEMACHANGE.CHANGE_HISTORY" --dry-run
+                    fi
+                  fi
+                done
+              fi
+            done
+          done
+        shell: bash
 
-      - name: Commit changes
+
+      - name: Perform deployment/auto commit of schemachange commands
+        if: github.workflow == 'schemachange auto commit'
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .github/workflows/main.yml
-          git commit -m "Update workflow with new directories"
-          git push
+          echo "Performing Deployment"
+        shell: bash
