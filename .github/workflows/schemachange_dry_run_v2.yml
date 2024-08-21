@@ -12,7 +12,7 @@ on:
           - 'always'
           - 'repeatable'
       db_folder_script:
-        description: 'Enter the sub folder under ${{ github.event.inputs.dir_type }}'
+        description: 'Enter the sub folder under the type of script?'
         required: true
         type: string
 
