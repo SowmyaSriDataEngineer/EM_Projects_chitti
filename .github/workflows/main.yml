@@ -3,34 +3,67 @@ name: Sample Inputs
 on:
   workflow_dispatch:
     inputs:
+      account_region:
+        description: 'Select Snowflake Account Region:'
+        required: true
+        type: choice
+        options:
+          - 'nonprod-us-east-2'
+          - 'prod-us-east-2'
+          - 'prod-eu-west-1'
+          - 'prod-ap-south-1'
+      db_env:
+        description: 'Select the type of database environment as per above region(it selects the associated config file)'
+        required: true
+        type: choice
+        options:
+          - 'prod'
+          - 'dev'
+          - 'staging'
+          - 'uat'
+          - 'sit'
+          - 'account_level'
       dir_type:
-        description: 'Select type of scripts'
+        description: 'Select type of scripts:'
         required: true
         type: choice
         options:
           - 'versioned'
           - 'always'
           - 'repeatable'
-      db_folder_script:
+      db_folder_name:
         description: 'Enter the sub-folder under the selected type'
         required: true
         type: string
 
-jobs:
-  list_folders:
+jobs:     
+  run_schemachange:
     runs-on: ubuntu-latest
-    outputs:
-      directories: ${{ steps.list_folders.outputs.options }}
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: List folders
-        id: list_folders
-        uses: ./.github/actions/schemachange
-        with:
-          dir_type: ${{ github.event.inputs.dir_type }}
-
-      - name: Set options for next step
-        id: set_options
-        run: echo "::set-output name=options::${{ steps.list_folders.outputs.options }}"
+      - name: Log in to JFrog Artifactory
+        env:
+          JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
+        run: |
+          echo $JFROG_IDENTITY_TOKEN | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+      
+      - name: Pull Docker image
+        run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
+ 
+      - name: Run schemachange dry run
+        id: schemachange
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
+          -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
+          ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
+          deploy \
+          -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
+          --config-folder /instances/schemachange/config/nonprod-us-east-2/${{ github.event.inputs.db_folder_name }}/${{ github.event.inputs.db_env }} \
+          -u $SNOWFLAKE_USER --dry-run
