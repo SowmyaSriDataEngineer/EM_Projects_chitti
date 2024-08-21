@@ -54,15 +54,21 @@ jobs:
       
       - name: Pull Docker image
         run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
+
+      - name: Write private key to file
+        run: |
+          echo "${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}" | base64 -d > ~/snowflake_service_user_private_key.p8
+          chmod 600 ~/snowflake_service_user_private_key.p8
  
       - name: Run schemachange dry run
         id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_PRIVATE_KEY_PATH: /home/runner/ ~/snowflake_service_user_private_key.p8
+          SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
-          -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
+          -e SNOWFLAKE_PRIVATE_KEY_PATH=$SNOWFLAKE_PRIVATE_KEY_PATH \
           ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
           deploy \
           -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
