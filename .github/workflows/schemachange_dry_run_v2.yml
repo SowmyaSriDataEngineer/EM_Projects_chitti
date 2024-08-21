@@ -16,7 +16,7 @@ jobs:
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
           JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
-          echo ${{ steps.get_token.outputs.token }} | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+          echo $JFROG_IDENTITY_TOKEN | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
       - name: Pull Docker image
         run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
