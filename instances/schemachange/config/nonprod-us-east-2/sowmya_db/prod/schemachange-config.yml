@@ -12,3 +12,6 @@ create-change-history-table: true
 vars:
   schemas:
     schema_1: 'SOWMYA_DB.schema1'
+    schema_2: 'SOWMYA_DB.schema2'
+    schema_3: 'SOWMYA_DB.schema3'
+    schema_4: 'SOWMYA_DB.schema3'
