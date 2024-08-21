@@ -30,7 +30,7 @@ jobs:
         id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: $(base64 --decode snowflake_password_base64.txt)
+          SNOWFLAKE_PASSWORD: $(snowflake_password_base64.txt)
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
           -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
