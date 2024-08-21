@@ -65,7 +65,7 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
-          -e SNOWFLAKE_PRIVATE_KEY=SNOWFLAKE_PRIVATE_KEY \
+          -e SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY \
           ${{ secrets.JFROG_REGISTRY }}/schemachange:latest \
           deploy \
           -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
