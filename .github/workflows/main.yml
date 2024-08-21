@@ -44,16 +44,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Docker credential helper
-        run: |
-          curl -fsSL https://github.com/docker/docker-credential-helper/releases/download/v0.7.0/docker-credential-helper-linux-amd64-0.7.0.tar.gz \
-            | tar xzC /usr/local/bin
-          chmod +x /usr/local/bin/docker-credential-helper
-
-      - name: Configure Docker to use the credential helper
+      - name: Clear Docker config before use
         run: |
           mkdir -p ~/.docker
-          echo '{"credsStore":"helper"}' > ~/.docker/config.json
+          echo '{}' > ~/.docker/config.json
 
       - name: Log in to JFrog Artifactory
         env:
@@ -78,3 +72,7 @@ jobs:
           -f /instances/schemachange/scripts/${{ github.event.inputs.dir_type }}/${{ github.event.inputs.db_folder_name }} \
           --config-folder /instances/schemachange/config/nonprod-us-east-2/${{ github.event.inputs.db_folder_name }}/${{ github.event.inputs.db_env }} \
           -u $SNOWFLAKE_USER --dry-run
+
+      - name: Clear Docker config after use
+        run: |
+          rm -f ~/.docker/config.json
