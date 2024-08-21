@@ -11,18 +11,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Encode credentials to base64
-        id: encode
-        run: |
-          echo -n "${{ secrets.SNOWFLAKE_PASSWORD }}" | base64 > snowflake_password_base64.txt
-          echo -n "${{ secrets.JFROG_IDENTITY_TOKEN }}" | base64 > jfrog_identity_token_base64.txt
-
       - name: Log in to JFrog Artifactory
         env:
           JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+          JFROG_IDENTITY_TOKEN: ${{ secrets.JFROG_IDENTITY_TOKEN }}
         run: |
-          base64 --decode jfrog_identity_token_base64.txt | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
-
+          echo $JFROG_IDENTITY_TOKEN | docker login ${{ secrets.JFROG_REGISTRY }} -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+      
       - name: Pull Docker image
         run: docker pull ${{ secrets.JFROG_REGISTRY }}/schemachange:latest
  
@@ -30,7 +25,7 @@ jobs:
         id: schemachange
         env:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: $(snowflake_password_base64.txt)
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
         run: |
           docker run --rm -v ${{ github.workspace }}/instances/schemachange:/instances/schemachange \
           -e SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD \
@@ -39,7 +34,3 @@ jobs:
           -f /instances/schemachange/scripts/versioned/sowmya_db \
           --config-folder /instances/schemachange/config/nonprod-us-east-2/sowmya_db/prod \
           -u $SNOWFLAKE_USER --dry-run
-
-      - name: Clean up Docker config
-        run: |
-          rm -f ~/.docker/config.json
